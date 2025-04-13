@@ -1,0 +1,94 @@
+using System;
+using System.Globalization;
+
+class Karyawan
+{
+    private string nama;
+    private string id;
+    private double gajiPokok;
+
+    public string Nama
+    {
+        get { return nama; }
+        set { nama = value; }
+    }
+
+    public string ID
+    {
+        get { return id; }
+        set { id = value; }
+    }
+
+    public double GajiPokok
+    {
+        get { return gajiPokok; }
+        set { gajiPokok = value; }
+    }
+
+    public virtual double HitungGaji()
+    {
+        return gajiPokok;
+    }
+}
+
+class KaryawanTetap : Karyawan
+{
+    public override double HitungGaji()
+    {
+        return GajiPokok + 500000;
+    }
+}
+
+class KaryawanKontrak : Karyawan
+{
+    public override double HitungGaji()
+    {
+        return GajiPokok - 200000;
+    }
+}
+
+class KaryawanMagang : Karyawan
+{
+    public override double HitungGaji()
+    {
+        return GajiPokok;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Jenis karyawan (tetap / kontrak / magang):");
+        string jenis = Console.ReadLine().ToLower();
+
+        Console.Write("Nama: ");
+        string nama = Console.ReadLine();
+
+        Console.Write("ID: ");
+        string id = Console.ReadLine();
+
+        Console.Write("Gaji Pokok: ");
+        double gaji = Convert.ToDouble(Console.ReadLine());
+
+        Karyawan karyawan;
+
+        if (jenis == "tetap")
+            karyawan = new KaryawanTetap();
+        else if (jenis == "kontrak")
+            karyawan = new KaryawanKontrak();
+        else if (jenis == "magang")
+            karyawan = new KaryawanMagang();
+        else
+        {
+            Console.WriteLine("Jenis tidak dikenali.");
+            return;
+        }
+
+        karyawan.Nama = nama;
+        karyawan.ID = id;
+        karyawan.GajiPokok = gaji;
+
+        Console.WriteLine($"\nGaji akhir {karyawan.Nama} ({jenis}): {karyawan.HitungGaji().ToString("C", new CultureInfo("id-ID"))}");
+    }
+}
